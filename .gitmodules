@@ -1,0 +1,12 @@
+[submodule "src/QtFtp"]
+	path = src/QtFtp
+	url = https://github.com/tangbao203/QtFtp
+[submodule "src/ftplibpp"]
+	path = src/ftplibpp
+	url = https://github.com/mkulke/ftplibpp
+[submodule "src/ftpclient-cpp"]
+	path = src/ftpclient-cpp
+	url = https://github.com/embeddedmz/ftpclient-cpp
+[submodule "src/qt5ftp"]
+	path = src/qt5ftp
+	url = https://github.com/spygg/qt5ftp
