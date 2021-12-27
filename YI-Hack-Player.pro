@@ -17,7 +17,7 @@ SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
     src/qt5ftp/qftp/qftp.cpp \
-    src/qt5ftp/qftp/qurlinfo.cpp
+    src/qt5ftp/qftp/qurlinfo.cpp \
 
 HEADERS += \
     src/camera.h \
@@ -28,7 +28,7 @@ HEADERS += \
     src/mainwindow.h \
     src/noteditabledelegate.h \
     src/qt5ftp/qftp/qftp.h \
-    src/qt5ftp/qftp/qurlinfo.h
+    src/qt5ftp/qftp/qurlinfo.h \
 
 FORMS += \
     src/camerainfowidget.ui \
@@ -61,3 +61,19 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     data/resources.qrc
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/ftpclient-cpp/lib/release/ -lftpclient
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/ftpclient-cpp/lib/debug/ -lftpclient
+else:unix: LIBS += -L$$PWD/src/ftpclient-cpp/lib/ -lftpclient
+
+INCLUDEPATH += $$PWD/src/ftpclient-cpp
+DEPENDPATH += $$PWD/src/ftpclient-cpp
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/src/ftpclient-cpp/lib/release/libftpclient.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/src/ftpclient-cpp/lib/debug/libftpclient.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/src/ftpclient-cpp/lib/release/ftpclient.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/src/ftpclient-cpp/lib/debug/ftpclient.lib
+else:unix: PRE_TARGETDEPS += $$PWD/src/ftpclient-cpp/lib/libftpclient.a
+
+unix: CONFIG += link_pkgconfig
+unix: PKGCONFIG += libcurl

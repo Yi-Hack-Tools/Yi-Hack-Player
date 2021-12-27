@@ -22,55 +22,6 @@
     <item>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QPushButton" name="editCameraBtn">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Edit</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../data/resources.qrc">
-            <normaloff>:/icons/icons/edit.svg</normaloff>:/icons/icons/edit.svg</iconset>
-          </property>
-          <property name="checkable">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="playBtn">
-          <property name="text">
-           <string>Play</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../data/resources.qrc">
-            <normaloff>:/icons/icons/play.svg</normaloff>:/icons/icons/play.svg</iconset>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="ftpBtn">
-          <property name="text">
-           <string>FTP</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../data/resources.qrc">
-            <normaloff>:/icons/icons/ftp.svg</normaloff>:/icons/icons/ftp.svg</iconset>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="0" column="1" rowspan="2">
-       <layout class="QHBoxLayout" name="horizontalLayout"/>
-      </item>
-      <item row="0" column="0">
        <widget class="QTableView" name="tableView">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
@@ -97,6 +48,89 @@
          <bool>false</bool>
         </attribute>
        </widget>
+      </item>
+      <item row="3" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QPushButton" name="editCameraBtn">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Edit</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../data/resources.qrc">
+            <normaloff>:/icons/icons/edit.svg</normaloff>:/icons/icons/edit.svg</iconset>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="playBtn">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string>Play</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../data/resources.qrc">
+            <normaloff>:/icons/icons/play.svg</normaloff>:/icons/icons/play.svg</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="ftpBtn">
+          <property name="text">
+           <string>FTP</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../data/resources.qrc">
+            <normaloff>:/icons/icons/ftp.svg</normaloff>:/icons/icons/ftp.svg</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="1" rowspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout"/>
+      </item>
+      <item row="3" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="screenshotBtn">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Screenshot</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../data/resources.qrc">
+            <normaloff>:/icons/icons/screenshot.svg</normaloff>:/icons/icons/screenshot.svg</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
@@ -250,6 +284,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>screenshotBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>screenshot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>919</x>
+     <y>543</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>896</x>
+     <y>502</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>editCamera(QModelIndex)</slot>
@@ -260,5 +310,6 @@
   <slot>tableViewContextMenu(QPoint)</slot>
   <slot>deleteCamera()</slot>
   <slot>openFtp()</slot>
+  <slot>screenshot()</slot>
  </slots>
 </ui>

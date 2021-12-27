@@ -25,13 +25,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    QtAV::AVPlayer *player;
 private:
     Ui::MainWindow *ui;
     QtAV::VideoOutput *videoOutput;
 
     QWidget *outputWidget;
 
-    QtAV::AVPlayer *player;
 
     QStandardItemModel cameraModel;
 
@@ -42,6 +42,11 @@ private:
     QMessageBox *ftpMessageBox;
 
     FtpDirsWidget *ftpDirsWidget;
+
+    QStringList downloadedFiles;
+
+public Q_SLOTS:
+    void playVideo(QString filename);
 
 private Q_SLOTS:
     void playSelected();
@@ -62,9 +67,14 @@ private Q_SLOTS:
 
     void loginStateChanged(int state);
 
-    void listInfo(const QUrlInfo &info);
-
     void loginFinished(int code, bool error);
 
+    void closeEvent(QCloseEvent *event) override;
+
+    void screenshot();
+
+    void imageCaptured(QImage image);
+
+    void videoLoaded();
 };
 #endif // MAINWINDOW_H

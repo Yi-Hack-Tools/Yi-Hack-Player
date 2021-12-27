@@ -17,31 +17,45 @@
    <iconset resource="../data/resources.qrc">
     <normaloff>:/icons/icons/ftp.svg</normaloff>:/icons/icons/ftp.svg</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QTableView" name="tableView">
-     <property name="selectionMode">
-      <enum>QAbstractItemView::SingleSelection</enum>
-     </property>
-     <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectRows</enum>
-     </property>
-     <attribute name="horizontalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-    </widget>
-   </item>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="playBtn">
-       <property name="text">
-        <string>Play</string>
+      <widget class="QTableView" name="dirTableView">
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SingleSelection</enum>
        </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+       <attribute name="horizontalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
       </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QTableView" name="mediaTableView">
+         <attribute name="horizontalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="playBtn">
+         <property name="text">
+          <string>Play</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -50,5 +64,42 @@
  <resources>
   <include location="../data/resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>playBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>FtpDirsWidget</receiver>
+   <slot>playMedia()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>517</x>
+     <y>437</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>544</x>
+     <y>425</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dirTableView</sender>
+   <signal>clicked(QModelIndex)</signal>
+   <receiver>FtpDirsWidget</receiver>
+   <slot>listMedia(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>221</x>
+     <y>140</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>546</x>
+     <y>143</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>playMedia()</slot>
+  <slot>listMedia(QModelIndex)</slot>
+ </slots>
 </ui>

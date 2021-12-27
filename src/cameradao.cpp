@@ -8,9 +8,7 @@ CameraDAO::CameraDAO()
     if(!database.isOpen()){
         database = QSqlDatabase::addDatabase("QSQLITE", "qt_sql_default_connection");
         database.setDatabaseName("cameras.db");
-        if(database.open()){
-            qDebug()<<"Database open!";
-        }else{
+        if(!database.open()){
             qDebug()<<database.lastError().databaseText();
         }
     }

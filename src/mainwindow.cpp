@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QtAVWidgets>
 #include "QtAV/AVPlayer.h"
-#include <QtAV>
+#include <QtAVWidgets>
 #include <QLabel>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     if(!checkDb.exists()){
         Database db;
+        db.open();
         db.create();
     }
 
@@ -78,7 +79,7 @@ void MainWindow::play(QModelIndex index){
 
     player->play(index.siblingAtColumn(2).data(Qt::EditRole).toString());
     connect(player, &QtAV::AVPlayer::loaded, loadingLabel, &QLabel::deleteLater);
-
+    connect(player, &QtAV::AVPlayer::loaded, this, &MainWindow::videoLoaded);
 }
 
 void MainWindow::updateCameraModel(){
@@ -166,7 +167,6 @@ void MainWindow::openFtp(){
         return;
     }
 
-
     QModelIndex selectedIndex = ui->tableView->selectionModel()->selectedRows().first();
 
     QString urlStr = selectedIndex.siblingAtColumn(2).data().toUrl().host();
@@ -174,8 +174,9 @@ void MainWindow::openFtp(){
     int ftpPort = selectedIndex.siblingAtColumn(4).data().toInt();
     bool isPasswordSaved = selectedIndex.siblingAtColumn(6).data().toBool();
     QString ftpPassword;
+
     if(isPasswordSaved){
-         ftpPassword = selectedIndex.siblingAtColumn(5).data().toString();
+        ftpPassword = selectedIndex.siblingAtColumn(5).data().toString();
     }else{
         ftpPassword = QInputDialog::getText(this,
                                             tr("FTP Password"),
@@ -183,12 +184,15 @@ void MainWindow::openFtp(){
                                             QLineEdit::Password);
     }
 
+    ftpDirsWidget = new FtpDirsWidget(urlStr, ftpPort, ftpUser, ftpPassword);
+
+    connect(ftpDirsWidget, &FtpDirsWidget::videoSelected, this, &MainWindow::playVideo);
+
     ftp = new QFtp;
     ftp->connectToHost(urlStr, ftpPort);
     ftp->login(ftpUser, ftpPassword);
 
     connect(ftp, &QFtp::stateChanged, this, &MainWindow::loginStateChanged);
-    connect(ftp, &QFtp::listInfo, this, &MainWindow::listInfo);
     connect(ftp, &QFtp::commandFinished, this, &MainWindow::loginFinished);
 
     ftpMessageBox = new QMessageBox;
@@ -198,20 +202,51 @@ void MainWindow::openFtp(){
 
 void MainWindow::loginStateChanged(int state){
     if(state == 4){
-        ftp->list("/tmp/sd/record/");
         ftpMessageBox->deleteLater();
-        ftpDirsWidget = new FtpDirsWidget;
         ftpDirsWidget->setWindowTitle(ui->tableView->selectionModel()->selectedRows().first().siblingAtColumn(1).data().toString() + " FTP");
         ftpDirsWidget->show();
     }
-}
-
-void MainWindow::listInfo(const QUrlInfo &info){
-    ftpDirsWidget->addItem(info.name());
+    //ftp->close();
 }
 
 void MainWindow::loginFinished(int code, bool error){
     if(error){
         ftpMessageBox->setText(tr("Could not login"));
+        ftpDirsWidget->deleteLater();
     }
+}
+
+void MainWindow::playVideo(QString filename){
+    downloadedFiles.append(filename);
+#ifdef __linux__
+    player->play("/tmp/" + filename);
+#elif _WIN32
+    player->play("%localappdata%\\Temp\\" + filename);
+#endif
+}
+
+void MainWindow::closeEvent(QCloseEvent *event){
+
+    for(const QString &filename : qAsConst(downloadedFiles)){
+        QFile file(filename);
+        file.open(QIODevice::ReadWrite);
+        file.remove();
+    }
+}
+
+void MainWindow::screenshot(){
+    connect(player->videoCapture(), &QtAV::VideoCapture::imageCaptured, this, &MainWindow::imageCaptured);
+    player->videoCapture()->capture();
+}
+
+void MainWindow::imageCaptured(QImage image){
+    image.save("Screenshot "
+               + ui->tableView->selectionModel()->selectedRows().first().siblingAtColumn(1).data().toString()
+               + " "
+               + QDateTime::currentDateTime().toString("yyyy-MM-dd HH mm ss") + ".jpg");
+
+}
+
+void MainWindow::videoLoaded(){
+    ui->screenshotBtn->setEnabled(true);
 }
