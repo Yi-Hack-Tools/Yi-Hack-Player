@@ -2,7 +2,7 @@ QT       += core gui av avwidgets sql network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++11 avwidgets
+CONFIG += c++14 avwidgets
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -18,6 +18,8 @@ SOURCES += \
     src/mainwindow.cpp \
     src/qt5ftp/qftp/qftp.cpp \
     src/qt5ftp/qftp/qurlinfo.cpp \
+    src/ftpclient-cpp/FTP/FTPClient.cpp \
+    src/ftpclient-cpp/FTP/CurlHandle.cpp
 
 HEADERS += \
     src/camera.h \
@@ -29,13 +31,14 @@ HEADERS += \
     src/noteditabledelegate.h \
     src/qt5ftp/qftp/qftp.h \
     src/qt5ftp/qftp/qurlinfo.h \
+    src/ftpclient-cpp/FTP/FTPClient.h \
+    src/ftpclient-cpp/FTP/CurlHandle.h
+
 
 FORMS += \
     src/camerainfowidget.ui \
     src/ftpdirswidget.ui \
     src/mainwindow.ui
-
-
 
 TRANSLATIONS += \
     YI-Hack-Player_pt_BR.ts
@@ -62,18 +65,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     data/resources.qrc
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/src/ftpclient-cpp/lib/release/ -lftpclient
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/src/ftpclient-cpp/lib/debug/ -lftpclient
-else:unix: LIBS += -L$$PWD/src/ftpclient-cpp/lib/ -lftpclient
-
-INCLUDEPATH += $$PWD/src/ftpclient-cpp
-DEPENDPATH += $$PWD/src/ftpclient-cpp
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/src/ftpclient-cpp/lib/release/libftpclient.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/src/ftpclient-cpp/lib/debug/libftpclient.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/src/ftpclient-cpp/lib/release/ftpclient.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/src/ftpclient-cpp/lib/debug/ftpclient.lib
-else:unix: PRE_TARGETDEPS += $$PWD/src/ftpclient-cpp/lib/libftpclient.a
 
 unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG += libcurl
