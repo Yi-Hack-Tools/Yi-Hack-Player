@@ -73,3 +73,5 @@ Thumbs.db
 
 # CMake Generated files
 *.txt.user
+CMakeCache.txt
+CMakeFiles/*
