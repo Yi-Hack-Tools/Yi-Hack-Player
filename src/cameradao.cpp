@@ -14,7 +14,8 @@ CameraDAO::CameraDAO()
     }
 }
 
-Camera CameraDAO::select(int id){
+Camera CameraDAO::select(int id)
+{
     QSqlQuery selectQuery(database);
     selectQuery.prepare("SELECT rowid, "
                         "name, "
@@ -40,7 +41,8 @@ Camera CameraDAO::select(int id){
     }
 }
 
-void CameraDAO::insert(Camera camera){
+void CameraDAO::insert(Camera camera)
+{
     QSqlQuery insertQuery;
     insertQuery.prepare("INSERT INTO camera (name, url, ftp_user, ftp_port, password, password_stored) "
                         "VALUES (:name, :url, :ftpUser, :ftpPort, :password, :passwordStored)");
@@ -53,14 +55,16 @@ void CameraDAO::insert(Camera camera){
     insertQuery.exec();
 }
 
-void CameraDAO::remove(int id){
+void CameraDAO::remove(int id)
+{
     QSqlQuery removeQuery;
     removeQuery.prepare("DELETE FROM camera WHERE rowid = :id");
     removeQuery.bindValue(":id", id);
     removeQuery.exec();
 }
 
-void CameraDAO::update(Camera camera){
+void CameraDAO::update(Camera camera)
+{
     QSqlQuery updateQuery;
     updateQuery.prepare("UPDATE camera SET name = :name, "
                         "url = :url, "
@@ -79,7 +83,8 @@ void CameraDAO::update(Camera camera){
     updateQuery.exec();
 }
 
-QList<Camera> CameraDAO::list(){
+QList<Camera> CameraDAO::list()
+{
     QList<Camera> camerasList;
 
     QSqlQuery countQuery;

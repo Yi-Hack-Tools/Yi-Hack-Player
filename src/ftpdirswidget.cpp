@@ -33,14 +33,16 @@ FtpDirsWidget::~FtpDirsWidget()
     delete cftpClient;
 }
 
-void FtpDirsWidget::addDirItem(QString name){
+void FtpDirsWidget::addDirItem(QString name)
+{
     QStandardItem *item = new QStandardItem;
     item->setData(name, Qt::EditRole);
     filesModel.setItem(filesModel.rowCount(), 0, item);
     ui->dirTableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 }
 
-void FtpDirsWidget::addMediaItem(QString name){
+void FtpDirsWidget::addMediaItem(QString name)
+{
     QStandardItem *item = new QStandardItem;
     item->setData(name, Qt::EditRole);
     mediaModel.setItem(mediaModel.rowCount(), 0, item);
@@ -48,7 +50,8 @@ void FtpDirsWidget::addMediaItem(QString name){
     mediaModel.sort(0);
 }
 
-void FtpDirsWidget::playMedia(){
+void FtpDirsWidget::playMedia()
+{
 
     if(!ui->mediaTableView->currentIndex().isValid() || !ui->dirTableView->currentIndex().isValid()){
         return;
@@ -62,20 +65,24 @@ void FtpDirsWidget::playMedia(){
     emit videoSelected(ui->mediaTableView->selectionModel()->selectedRows().first().siblingAtColumn(0).data().toString());
 }
 
-void FtpDirsWidget::listMedia(QModelIndex index){
+void FtpDirsWidget::listMedia(QModelIndex index)
+{
     ftp->list("/tmp/sd/record/" + index.siblingAtColumn(0).data(Qt::EditRole).toString() + "/");
     connect(ftp, &QFtp::listInfo, this, &FtpDirsWidget::listMediaInfo);
 }
 
-void FtpDirsWidget::listDirInfo(const QUrlInfo &info){
+void FtpDirsWidget::listDirInfo(const QUrlInfo &info)
+{
     addDirItem(info.name());
 }
 
-void FtpDirsWidget::listMediaInfo(const QUrlInfo &info){
+void FtpDirsWidget::listMediaInfo(const QUrlInfo &info)
+{
     addMediaItem(info.name());
 }
 
-void FtpDirsWidget::loginStateChanged(int state){
+void FtpDirsWidget::loginStateChanged(int state)
+{
     if (state == 4){
         ftp->list("/tmp/sd/record/");
         connect(ftp, &QFtp::listInfo, this, &FtpDirsWidget::listDirInfo);
@@ -83,11 +90,13 @@ void FtpDirsWidget::loginStateChanged(int state){
     connect(ftp, &QFtp::done, this, &FtpDirsWidget::disconnectDirsListing);
 }
 
-void FtpDirsWidget::disconnectDirsListing(){
+void FtpDirsWidget::disconnectDirsListing()
+{
     disconnect(ftp, &QFtp::listInfo, this, &FtpDirsWidget::listDirInfo);
 }
 
-void FtpDirsWidget::downloadFile(QString filename){
+void FtpDirsWidget::downloadFile(QString filename)
+{
 
     cftpClient->InitSession(host.toStdString(), port, username.toStdString(), password.toStdString());
 #ifdef __linux__

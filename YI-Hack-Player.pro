@@ -2,7 +2,7 @@ QT       += core gui av avwidgets sql network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++14 avwidgets
+CONFIG += c++17 avwidgets
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -68,3 +68,6 @@ RESOURCES += \
 
 unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG += libcurl
+
+DISTFILES += \
+    CMakeLists.txt

@@ -47,8 +47,8 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     NotEditableDelegate *delegate = new NotEditableDelegate;
-    ui->tableView->setItemDelegateForRow(0, delegate);
-    ui->tableView->setItemDelegateForRow(1, delegate);
+    ui->tableView->setItemDelegateForColumn(1, delegate);
+
 }
 
 MainWindow::~MainWindow()
